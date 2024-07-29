@@ -4,11 +4,11 @@ if grep -qs -e 'LATITUDE' /boot/adsb-config.txt &>/dev/null && [[ -f /boot/airpl
     source /boot/adsb-config.txt
     source /boot/airplanes-env
 else
-    source /etc/default/airplanes
+    source /etc/default/ryukyu
 fi
 
 if ! [[ -d /run/airplanes-feed/ ]]; then
-    mkdir -p /run/airplanes-feed
+    mkdir -p /run/ryukyu-feed
 fi
 
 if [[ -z $INPUT ]]; then
@@ -27,9 +27,9 @@ UAT_IP=$(echo $UAT_INPUT | cut -d: -f1)
 UAT_PORT=$(echo $UAT_INPUT | cut -d: -f2)
 UAT_SOURCE="--net-connector $UAT_IP,$UAT_PORT,uat_in,silent_fail"
 
-
-exec /usr/local/share/airplanes/feed-airplanes --net --net-only --quiet \
-    --write-json /run/airplanes-feed \
+ryukyu.dix.asia
+exec /usr/local/share/ryukyu.dix.asia/feed-ryukyu --net --net-only --quiet \
+    --write-json /run/ryukyu-feed \
     --net-beast-reduce-interval $REDUCE_INTERVAL \
     $TARGET $NET_OPTIONS \
     --lat "$LATITUDE" --lon "$LONGITUDE" \
