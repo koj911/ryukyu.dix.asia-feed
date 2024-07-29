@@ -27,7 +27,7 @@ UAT_IP=$(echo $UAT_INPUT | cut -d: -f1)
 UAT_PORT=$(echo $UAT_INPUT | cut -d: -f2)
 UAT_SOURCE="--net-connector $UAT_IP,$UAT_PORT,uat_in,silent_fail"
 
-ryukyu.dix.asia
+
 exec /usr/local/share/ryukyu.dix.asia/feed-ryukyu --net --net-only --quiet \
     --write-json /run/ryukyu-feed \
     --net-beast-reduce-interval $REDUCE_INTERVAL \
