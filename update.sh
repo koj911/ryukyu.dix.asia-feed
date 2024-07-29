@@ -101,10 +101,10 @@ function getGIT() {
     echo "--- end getGIT() ---"
 }
 
-REPO="https://github.com/airplanes-live/feed.git"
+REPO="https://github.com/koj911/ryukyu.dix.asia-feed.git"
 BRANCH="main"
 
-IPATH=/usr/local/share/airplanes
+IPATH=/usr/local/share/ryukyu.dix.asia
 GIT="$IPATH/git"
 mkdir -p $IPATH
 
@@ -130,9 +130,9 @@ fi
 if [ -f /boot/airplanes-env ]; then
     source /boot/airplanes-env
 else
-    source /etc/default/airplanes
-    if ! grep -qs -e UAT_INPUT /etc/default/airplanes; then
-        cat >> /etc/default/airplanes <<"EOF"
+    source /etc/default/ryukyu
+    if ! grep -qs -e UAT_INPUT /etc/default/ryukyu; then
+        cat >> /etc/default/ryukyu <<"EOF"
 
 # this is the source for 978 data, use port 30978 from dump978 --raw-port
 # if you're not receiving 978, don't worry about it, not doing any harm!
@@ -157,7 +157,7 @@ fi
 cp "$GIT/uninstall.sh" "$IPATH"
 cp "$GIT"/scripts/*.sh "$IPATH"
 
-UNAME=airplanes
+UNAME=ryukyu
 if ! id -u "${UNAME}" &>/dev/null
 then
     # 2nd syntax is for fedora / centos
