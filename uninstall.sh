@@ -1,26 +1,26 @@
 #!/bin/bash
 set -x
 
-IPATH=/usr/local/share/airplanes
+IPATH=/usr/local/share/ryukyu.dix.asia
 
-systemctl disable --now airplanes-mlat
-systemctl disable --now airplanes-mlat2 &>/dev/null
-systemctl disable --now airplanes-feed
+systemctl disable --now ryukyu-mlat
+systemctl disable --now ryukyu-mlat2 &>/dev/null
+systemctl disable --now ryukyu-feed
 
-if [[ -d /usr/local/share/tar1090/html-airplanes ]]; then
-    bash /usr/local/share/tar1090/uninstall.sh airplanes
+if [[ -d /usr/local/share/tar1090/html-ryukyu ]]; then
+    bash /usr/local/share/tar1090/uninstall.sh ryukyu
 fi
 
-rm -f /lib/systemd/system/airplanes-mlat.service
-rm -f /lib/systemd/system/airplanes-mlat2.service
-rm -f /lib/systemd/system/airplanes-feed.service
+rm -f /lib/systemd/system/ryukyu-mlat.service
+rm -f /lib/systemd/system/ryukyu-mlat2.service
+rm -f /lib/systemd/system/ryukyu-feed.service
 
-cp -f "$IPATH/airplanes-uuid" /tmp/airplanes-uuid
+cp -f "$IPATH/ryukyu-uuid" /tmp/ryukyu-uuid
 rm -rf "$IPATH"
 mkdir -p "$IPATH"
-mv -f /tmp/airplanes-uuid "$IPATH/airplanes-uuid"
+mv -f /tmp/ryukyu-uuid "$IPATH/ryukyu-uuid"
 
 set +x
 
 echo -----
-echo "airplanes.live feed scripts have been uninstalled!"
+echo "ryukyu.dix.asia feed scripts have been uninstalled!"
