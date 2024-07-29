@@ -7,7 +7,7 @@ else
     source /etc/default/ryukyu
 fi
 
-if ! [[ -d /run/airplanes-feed/ ]]; then
+if ! [[ -d /run/ryukyu-feed/ ]]; then
     mkdir -p /run/ryukyu-feed
 fi
 
