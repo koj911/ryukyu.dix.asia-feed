@@ -194,7 +194,7 @@ MLAT_REPO="https://github.com/airplanes-live/mlat-client"
 MLAT_BRANCH="master"
 MLAT_VERSION="$(git ls-remote $MLAT_REPO $MLAT_BRANCH | cut -f1 || echo $RANDOM-$RANDOM )"
 if [[ $REINSTALL != yes ]] && grep -e "$MLAT_VERSION" -qs $IPATH/mlat_version \
-    && grep -qs -e '#!' "$VENV/bin/mlat-client" && { systemctl is-active airplanes-mlat &>/dev/null || [[ "${MLAT_DISABLED}" == "1" ]]; }
+    && grep -qs -e '#!' "$VENV/bin/mlat-client" && { systemctl is-active ryukyu-mlat &>/dev/null || [[ "${MLAT_DISABLED}" == "1" ]]; }
 then
     echo
     echo "mlat-client already installed, git hash:"
@@ -246,32 +246,32 @@ fi
 
 echo 50
 
-# copy airplanes-mlat service file
-cp "$GIT"/scripts/airplanes-mlat.service /lib/systemd/system
+# copy ryukyu-mlat service file
+cp "$GIT"/scripts/ryukyu-mlat.service /lib/systemd/system
 
 echo 60
 
-if ls -l /etc/systemd/system/airplanes-mlat.service 2>&1 | grep '/dev/null' &>/dev/null; then
+if ls -l /etc/systemd/system/ryukyu-mlat.service 2>&1 | grep '/dev/null' &>/dev/null; then
     echo "--------------------"
-    echo "CAUTION, airplanes-mlat is masked and won't run!"
+    echo "CAUTION, ryukyu-mlat is masked and won't run!"
     echo "If this is unexpected for you, please report this issue."
     echo "--------------------"
     sleep 3
 else
     if [[ "${MLAT_DISABLED}" == "1" ]]; then
-        systemctl disable airplanes-mlat || true
-        systemctl stop airplanes-mlat || true
+        systemctl disable ryukyu-mlat || true
+        systemctl stop ryukyu-mlat || true
     else
-        # Enable airplanes-mlat service
-        systemctl enable airplanes-mlat >> $LOGFILE || true
-        # Start or restart airplanes-mlat service
-        systemctl restart airplanes-mlat || true
+        # Enable ryukyu-mlat service
+        systemctl enable ryukyu-mlat >> $LOGFILE || true
+        # Start or restart ryukyu-mlat service
+        systemctl restart ryukyu-mlat || true
     fi
 fi
 
 echo 70
 
-# SETUP FEEDER TO SEND DUMP1090 DATA TO airplanes.live
+# SETUP FEEDER TO SEND DUMP1090 DATA TO ryukyu.dix.aisa
 
 READSB_REPO="https://github.com/airplanes-live/readsb.git"
 READSB_BRANCH="dev"
@@ -282,7 +282,7 @@ READSB_VERSION="$(git ls-remote $READSB_REPO $READSB_BRANCH | cut -f1 || echo $R
 READSB_GIT="$IPATH/readsb-git"
 READSB_BIN="$IPATH/feed-airplanes"
 if [[ $REINSTALL != yes ]] && grep -e "$READSB_VERSION" -qs $IPATH/readsb_version \
-    && "$READSB_BIN" -V && systemctl is-active airplanes-feed &>/dev/null
+    && "$READSB_BIN" -V && systemctl is-active ryukyu-feed &>/dev/null
 then
     echo
     echo "Feed client already installed, git hash:"
@@ -319,19 +319,19 @@ fi
 
 #end compile readsb
 
-cp "$GIT"/scripts/airplanes-feed.service /lib/systemd/system
+cp "$GIT"/scripts/ryukyu-feed.service /lib/systemd/system
 
 echo 82
 
-if ! ls -l /etc/systemd/system/airplanes-feed.service 2>&1 | grep '/dev/null' &>/dev/null; then
-    # Enable airplanes-feed service
-    systemctl enable airplanes-feed >> $LOGFILE || true
+if ! ls -l /etc/systemd/system/ryukyu-feed.service 2>&1 | grep '/dev/null' &>/dev/null; then
+    # Enable ryukyu-feed service
+    systemctl enable ryukyu-feed >> $LOGFILE || true
     echo 92
-    # Start or restart airplanes-feed service
-    systemctl restart airplanes-feed || true
+    # Start or restart ryukyu-feed service
+    systemctl restart ryukyu-feed || true
 else
     echo "--------------------"
-    echo "CAUTION, airplanes-feed.service is masked and won't run!"
+    echo "CAUTION, ryukyu-feed.service is masked and won't run!"
     echo "If this is unexpected for you, please report this issue."
     echo "--------------------"
     sleep 3
@@ -339,32 +339,32 @@ fi
 
 echo 94
 
-systemctl is-active airplanes-feed &>/dev/null || {
+systemctl is-active ryukyu-feed &>/dev/null || {
     rm -f $IPATH/readsb_version
     echo "---------------------------------"
-    journalctl -u airplanes-feed | tail -n10
+    journalctl -u ryukyu-feed | tail -n10
     echo "---------------------------------"
-    echo "airplanes-feed service couldn't be started, please report this error on Discord."
+    echo "ryukyu-feed service couldn't be started, please report this error on Discord."
     echo "Try an copy as much of the output above and include it in your report, thank you!"
     echo "---------------------------------"
     exit 1
 }
 
 echo 96
-[[ "${MLAT_DISABLED}" == "1" ]] || systemctl is-active airplanes-mlat &>/dev/null || {
+[[ "${MLAT_DISABLED}" == "1" ]] || systemctl is-active ryukyu-mlat &>/dev/null || {
     rm -f $IPATH/mlat_version
     echo "---------------------------------"
-    journalctl -u airplanes-mlat | tail -n10
+    journalctl -u ryukyu-mlat | tail -n10
     echo "---------------------------------"
-    echo "airplanes-mlat service couldn't be started, please report this error on Discord."
+    echo "ryukyu-mlat service couldn't be started, please report this error on Discord."
     echo "Try an copy as much of the output above and include it in your report, thank you!"
     echo "---------------------------------"
     exit 1
 }
 
 # Remove old method of starting the feed scripts if present from rc.local
-# Kill the old airplanes.live scripts in case they are still running from a previous install including spawned programs
-for name in airplanes-netcat_maint.sh airplanes-socat_maint.sh airplanes-mlat_maint.sh; do
+# Kill the old ryukyu.dix.asia scripts in case they are still running from a previous install including spawned programs
+for name in ryukyu-netcat_maint.sh ryukyu-socat_maint.sh ryukyu-mlat_maint.sh; do
     if grep -qs -e "$name" /etc/rc.local; then
         sed -i -e "/$name/d" /etc/rc.local || true
     fi
@@ -374,13 +374,13 @@ for name in airplanes-netcat_maint.sh airplanes-socat_maint.sh airplanes-mlat_ma
     fi
 done
 
-# in case the mlat-client service using /etc/default/mlat-client as config is using airplanes.live as a host, disable the service
-if grep -qs 'SERVER_HOSTPORT.*feed.airplanes.live' /etc/default/mlat-client &>/dev/null; then
+# in case the mlat-client service using /etc/default/mlat-client as config is using ryukyu.dix.asia as a host, disable the service
+if grep -qs 'SERVER_HOSTPORT.*ryukyu.dix.asia' /etc/default/mlat-client &>/dev/null; then
     systemctl disable --now mlat-client >> $LOGFILE 2>&1 || true
 fi
 
-if [[ -f /etc/default/airplanes ]]; then
-    sed -i -e 's/feed.airplanes.live,30004,beast_reduce_out,feed.airplanes.live,64004/feed.airplanes.live,30004,beast_reduce_out,feed.airplanes.live,64004/' /etc/default/airplanes || true
+if [[ -f /etc/default/ryukyu ]]; then
+    sed -i -e 's/ryukyu.dix.asia,30004,beast_reduce_out,ryukyu.dix.asia,64004/ryukyu.dix.asia,30004,beast_reduce_out,ryukyu.dix.asia,64004/' /etc/default/ryukyu || true
 fi
 
 
@@ -391,9 +391,9 @@ echo "---------------------"
 ## SETUP COMPLETE
 
 ENDTEXT="
-Thanks for choosing to share your data with airplanes.live!
+Thanks for choosing to share your data with ryukyu.dix.asia!
 
-Check https://airplanes.live/myfeed/ for feeder status!
+Check https://ryuyu.dix.asia:8081/myfeed/ for feeder status!
 
 Your feed should be active within 5 minutes, you can confirm by running the following command and looking for the IP address 78.46.234.18
 netstat -t -n | grep -E '30004|31090'
@@ -402,7 +402,7 @@ Question? Issues? Go here:
 https://discord.gg/jfVRF2XRwF
 
 Web interface to show the data transmitted? Run this command:
-sudo bash /usr/local/share/airplanes/git/install-or-update-interface.sh
+sudo bash /usr/local/share/ryukyu.dix.asia/git/install-or-update-interface.sh
 "
 
 INPUT_IP=$(echo $INPUT | cut -d: -f1)
@@ -434,10 +434,10 @@ https://github.com/wiedehopf/adsb-scripts/wiki/Automatic-installation-for-readsb
 fi
 
 if ! timeout 5 nc -z "$INPUT_IP" "$INPUT_PORT" && command -v nc &>/dev/null; then
-    #whiptail --title "airplanes.live Setup Script" --msgbox "$ENDTEXT2" 24 73
+    #whiptail --title "ryukyu.dix.asia Setup Script" --msgbox "$ENDTEXT2" 24 73
     echo -e "$ENDTEXT2"
 else
     # Display the thank you message box.
-    #whiptail --title "airplanes.live Setup Script" --msgbox "$ENDTEXT" 24 73
+    #whiptail --title "ryukyu.dix.asia Setup Script" --msgbox "$ENDTEXT" 24 73
     echo -e "$ENDTEXT"
 fi
