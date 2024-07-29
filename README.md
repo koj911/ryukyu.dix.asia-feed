@@ -1,6 +1,6 @@
-# airplanes.live feed client
+# ryukyu.dix.asiae feed client
 
-- These scripts aid in setting up your current ADS-B receiver to feed [airplanes.live](https://airplanes.live/).
+- These scripts aid in setting up your current ADS-B receiver to feed [ryukyu.dix.asia](https://ryukyu.dix.asia:8081/).
 - This will not disrupt any existing feed clients already present.
 - When setting up new feeders, a decoder such as [readsb](https://github.com/wiedehopf/adsb-scripts/wiki/Automatic-installation-for-readsb) must be installed separately.
 
@@ -11,12 +11,12 @@
 ## 2: Install the feed client
 
 ```
-curl -L -o /tmp/feed.sh https://raw.githubusercontent.com/airplanes-live/feed/main/install.sh
+curl -L -o /tmp/feed.sh https://raw.githubusercontent.com/koj911/ryukyu.dix.asia-feed/main/install.sh
 sudo bash /tmp/feed.sh
 ```
 
 ## 3: Use netstat to check that your feed is working
-The feed IP for airplanes.live is 78.46.234.18
+The feed IP for ryukyu.dix.asia is xx.xx.xx.xx
 
 ```
 netstat -t -n | grep -E '30004|31090'
@@ -29,36 +29,36 @@ tcp        0    410 localhost:47332     78.46.234.18:30004      ESTABLISHED
 
 ## 4: Optional: Install [local interface](https://github.com/wiedehopf/tar1090) for your data
 
-The interface will be available at http://192.168.X.XX/airplanes  
+The interface will be available at http://192.168.X.XX/ryukyu  
 Replace the IP address with the address of your Raspberry Pi.
 
 Install / Update:
 ```
-sudo bash /usr/local/share/airplanes/git/install-or-update-interface.sh
+sudo bash /usr/local/share/ryukyu.dix.asia/git/install-or-update-interface.sh
 ```
 Remove:
 ```
-sudo bash /usr/local/share/tar1090/uninstall.sh airplanes
+sudo bash /usr/local/share/tar1090/uninstall.sh ryukyu
 ```
 
 ### Update the feed client without reconfiguring
 
 ```
-curl -L -o /tmp/update.sh https://raw.githubusercontent.com/airplanes-live/feed/main/update.sh
+curl -L -o /tmp/update.sh https://raw.githubusercontent.com/koj911/ryukyu.dix.asia-feed/main/update.sh
 sudo bash /tmp/update.sh
 ```
 
 ### If you encounter issues, please do a reboot and then supply these logs on Discord (last 20 lines for each is sufficient):
 
 ```
-sudo journalctl -u airplanes-feed --no-pager
-sudo journalctl -u airplanes-mlat --no-pager
+sudo journalctl -u ryukyu-feed --no-pager
+sudo journalctl -u ryukyu-mlat --no-pager
 ```
 
 ### Display the configuration
 
 ```
-cat /etc/default/airplanes
+cat /etc/default/ryukyu
 ```
 
 ### Changing the configuration
@@ -68,50 +68,50 @@ If the client is up to date it should not take as long as the original installat
 otherwise this will also update the client which will take a moment.
 
 ```
-curl -L -o /tmp/feed.sh https://raw.githubusercontent.com/airplanes-live/feed/main/install.sh
+curl -L -o /tmp/feed.sh https://raw.githubusercontent.com/koj911/ryukyu.dix.asia-feed/main/install.sh
 sudo bash /tmp/feed.sh
 ```
 
-### Disable / Enable airplanes.live MLAT-results in your main decoder interface (readsb / dump1090-fa)
+### Disable / Enable ryukyu.dix.asia MLAT-results in your main decoder interface (readsb / dump1090-fa)
 
 This is enabled by default. You probably don't need to change that.
 
 - Disable:
 
 ```
-sudo sed --follow-symlinks -i -e 's/RESULTS=.*/RESULTS=""/' /etc/default/airplanes
-sudo systemctl restart airplanes-mlat
+sudo sed --follow-symlinks -i -e 's/RESULTS=.*/RESULTS=""/' /etc/default/ryukyu
+sudo systemctl restart ryukyu-mlat
 ```
 - Enable:
 
 ```
-sudo sed --follow-symlinks -i -e 's/RESULTS=.*/RESULTS="--results beast,connect,127.0.0.1:30104"/' /etc/default/airplanes
-sudo systemctl restart airplanes-mlat
+sudo sed --follow-symlinks -i -e 's/RESULTS=.*/RESULTS="--results beast,connect,127.0.0.1:30104"/' /etc/default/ryukyu
+sudo systemctl restart ryukyu-mlat
 ```
 
 ### Restart the feed client
 
 ```
-sudo systemctl restart airplanes-feed
-sudo systemctl restart airplanes-mlat
+sudo systemctl restart ryukyu-feed
+sudo systemctl restart ryukyu-mlat
 ```
 
 ### Show status
 
 ```
-sudo systemctl status airplanes-feed
-sudo systemctl status airplanes-mlat
+sudo systemctl status ryukyu-feed
+sudo systemctl status ryukyu-mlat
 ```
 
 ### Removal / disabling the services
 
 ```
-sudo bash /usr/local/share/airplanes/uninstall.sh
+sudo bash /usr/local/share/ryukyu.dix.asia/uninstall.sh
 ```
 
 If the above doesn't work, you can just disable the services and the scripts won't run anymore:
 
 ```
-sudo systemctl disable --now airplanes-feed
-sudo systemctl disable --now airplanes-mlat
+sudo systemctl disable --now ryukyu-feed
+sudo systemctl disable --now ryukyu-mlat
 ```
