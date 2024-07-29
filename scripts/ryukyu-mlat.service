@@ -5,9 +5,9 @@ Wants=network.target
 After=network.target
 
 [Service]
-User=airplanes
+User=ryukyu
 RuntimeDirectory=ryukyu-mlat
-ExecStart=/usr/local/share/airplanes/ryukyu-mlat.sh
+ExecStart=/usr/local/share/ryukyu.dix.asia/ryukyu-mlat.sh
 Type=simple
 Restart=always
 RestartSec=30
