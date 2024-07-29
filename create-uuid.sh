@@ -4,7 +4,7 @@ if [ -f /boot/airplanes-config.txt ]; then
     UUID_FILE="/boot/airplanes-uuid"
 else
     mkdir -p /usr/local/share/airplanes
-    UUID_FILE="/usr/local/share/airplanes/airplanes-uuid"
+    UUID_FILE="/usr/local/share/ryukyu.dix.asia/airplanes-uuid"
     # move old file position
     if [ -f /boot/airplanes-uuid ]; then
         mv -f /boot/airplanes-uuid $UUID_FILE
