@@ -1,9 +1,9 @@
 #!/bin/bash
 set -e
 
-REPO="https://github.com/airplanes-live/feed.git"
+REPO="https://github.com/koj911/ryukyu.dix.asia-feed.git"
 BRANCH="main"
-IPATH=/usr/local/share/airplanes
+IPATH=/usr/local/share/ryukyu.dix.asia
 mkdir -p $IPATH
 
 if [ "$(id -u)" != "0" ]; then
