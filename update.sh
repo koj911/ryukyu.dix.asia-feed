@@ -280,7 +280,7 @@ if grep -E 'wheezy|jessie' /etc/os-release -qs; then
 fi
 READSB_VERSION="$(git ls-remote $READSB_REPO $READSB_BRANCH | cut -f1 || echo $RANDOM-$RANDOM )"
 READSB_GIT="$IPATH/readsb-git"
-READSB_BIN="$IPATH/feed-airplanes"
+READSB_BIN="$IPATH/feed-ryukyu"
 if [[ $REINSTALL != yes ]] && grep -e "$READSB_VERSION" -qs $IPATH/readsb_version \
     && "$READSB_BIN" -V && systemctl is-active ryukyu-feed &>/dev/null
 then
