@@ -1,5 +1,5 @@
 #!/bin/bash
-SERVICE="/lib/systemd/system/airplanes-mlat2.service"
+SERVICE="/lib/systemd/system/ryukyu-mlat2.service"
 
 if [[ -z ${1} ]]; then
     echo --------------
@@ -9,17 +9,17 @@ fi
 
 cat >"$SERVICE" <<"EOF"
 [Unit]
-Description=airplanes-mlat2
+Description=ryukyu-mlat2
 Wants=network.target
 After=network.target
 
 [Service]
-User=airplanes
-EnvironmentFile=/etc/default/airplanes
-ExecStart=/usr/local/share/airplanes/venv/bin/mlat-client \
+User=ryukyu
+EnvironmentFile=/etc/default/ryukyu
+ExecStart=/usr/local/share/ryukyu.dix.asia/venv/bin/mlat-client \
     --input-type $INPUT_TYPE --no-udp \
     --input-connect $INPUT \
-    --server feed.airplanes.live:SERVERPORT \
+    --server ryukyu.dix.asia:SERVERPORT \
     --user $USER \
     --lat $LATITUDE \
     --lon $LONGITUDE \
@@ -32,7 +32,7 @@ Restart=always
 RestartSec=30
 StartLimitInterval=1
 StartLimitBurst=100
-SyslogIdentifier=airplanes-mlat2
+SyslogIdentifier=ryukyu-mlat2
 Nice=-1
 
 [Install]
@@ -40,7 +40,7 @@ WantedBy=default.target
 EOF
 
 if [[ -f /boot/adsb-config.txt ]]; then
-    sed -i -e 's#EnvironmentFile.*#EnvironmentFile=/boot/airplanes-env\nEnvironmentFile=/boot/adsb-config.txt#' "$SERVICE"
+    sed -i -e 's#EnvironmentFile.*#EnvironmentFile=/boot/ryukyu-env\nEnvironmentFile=/boot/adsb-config.txt#' "$SERVICE"
 fi
 
 sed -i -e "s/SERVERPORT/${1}/" "$SERVICE"
@@ -48,5 +48,5 @@ if [[ -n ${2} ]]; then
     sed -i -e "s/\$RESULTS/${2}/" "$SERVICE"
 fi
 
-systemctl enable airplanes-mlat2
-systemctl restart airplanes-mlat2
+systemctl enable ryukyu-mlat2
+systemctl restart ryukyu-mlat2
