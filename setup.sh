@@ -39,15 +39,15 @@ if [ "$(id -u)" != "0" ]; then
     exit 1
 fi
 
-## REFUSE INSTALLATION ON AIRPLANES.LIVE IMAGE
+## REFUSE INSTALLATION ON RYUKYU.DIX.ASIA IMAGE
 
-if [ -f /boot/airplanes-config.txt ]; then
+if [ -f /boot/ryukyu-config.txt ]; then
     echo --------
-    echo "You are using the airplanes.live image, the feed setup script does not need to be installed."
+    echo "You are using the ryukyu.dix.asia image, the feed setup script does not need to be installed."
     echo "You should already be feeding."
     echo "If the feed isn't working, check/correct the configuration using nano:"
     echo --------
-    echo "sudo nano /boot/airplanes-config.txt"
+    echo "sudo nano /boot/ryukyu-config.txt"
     echo --------
     echo "Hint for using nano: Ctrl-X to exit, Y(yes) and Enter to save."
     echo --------
@@ -57,7 +57,7 @@ fi
 
 bash "$IPATH/git/configure.sh"
 
-whiptail --backtitle "$BACKTITLETEXT" --title "$BACKTITLETEXT" --yesno "We are now ready to begin setting up your receiver to feed airplanes.live.\n\nDo you wish to proceed?" 9 78 || exit 1
+whiptail --backtitle "$BACKTITLETEXT" --title "$BACKTITLETEXT" --yesno "We are now ready to begin setting up your receiver to feed ryukyu.dix.asia.\n\nDo you wish to proceed?" 9 78 || exit 1
 
 bash "$IPATH/git/update.sh"
 
