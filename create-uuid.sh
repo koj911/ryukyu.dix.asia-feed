@@ -1,13 +1,13 @@
 #!/bin/bash
 
 if [ -f /boot/airplanes-config.txt ]; then
-    UUID_FILE="/boot/airplanes-uuid"
+    UUID_FILE="/boot/ryukyu-uuid"
 else
-    mkdir -p /usr/local/share/airplanes
-    UUID_FILE="/usr/local/share/ryukyu.dix.asia/airplanes-uuid"
+    mkdir -p /usr/local/share/ryukyu.dix.asia
+    UUID_FILE="/usr/local/share/ryukyu.dix.asia/ryukyu-uuid"
     # move old file position
-    if [ -f /boot/airplanes-uuid ]; then
-        mv -f /boot/airplanes-uuid $UUID_FILE
+    if [ -f /boot/ryukyu-uuid ]; then
+        mv -f /boot/ryukyu-uuid $UUID_FILE
     fi
 fi
 
